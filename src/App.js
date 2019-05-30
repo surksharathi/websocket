@@ -1,26 +1,34 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+  import Websocket from 'react-websocket';
+ 
+  class App extends React.Component {
+ 
+    constructor(props) {
+      super(props);
+      this.state = {
+        count: 90
+      };
+    }
+ 
+    handleData(data) {
+      let result = JSON.parse(data);
+      this.setState({count: this.state.count + result.movement});
+    }
+    handleopen(){
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App;
+      console.log("open port")
+    }
+ 
+    render() {
+      return (
+        <div>
+          Count: <strong>{this.state.count}</strong>
+ 
+          <Websocket url='wss://k7txwwf30m.execute-api.ap-south-1.amazonaws.com/dev'
+              onMessage={this.handleData.bind(this)} onOpen={this.handleopen.bind(this)}/>
+        </div>
+      );
+    }
+  }
+ 
+  export default App;
